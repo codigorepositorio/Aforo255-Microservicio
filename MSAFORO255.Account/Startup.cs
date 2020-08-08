@@ -5,11 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS.AFORO255.Cross.Jwt.Src;
-using MSAFORO255.Security.Repository;
-using MSAFORO255.Security.Repository.Data;
-using MSAFORO255.Security.Service;
+using MSAFORO255.Account.Repository;
+using MSAFORO255.Account.Repository.Data;
+using MSAFORO255.Account.Service;
 
-namespace MSAFORO255.Security
+namespace MSAFORO255.Account
 {
     public class Startup
     {
@@ -23,22 +23,20 @@ namespace MSAFORO255.Security
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JwtOptions>(Configuration.GetSection("jwt"));
-            services.AddControllers();
+
+           // services.AddJwtCustomized();
 
             services.AddDbContext<ContextDatabase>(
-                opt =>
-                {
-                    opt.UseMySQL(Configuration["mysql:cn"]);
-                });                
+               opt =>
+               {
+                   opt.UseSqlServer(Configuration["sqlserver:cn"]);
+               });
 
-              
-            services.AddScoped<IAccessService, AccessService>();
-
-            services.AddScoped<IAccessRepository, AccessRepository>();
-
+            services.AddScoped<IAccountService, AccountService>();            
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IContextDatabase, ContextDatabase>();
 
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,11 +47,11 @@ namespace MSAFORO255.Security
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            //app.UseAuthentication();
             app.UseAuthorization();
+
+        
 
             app.UseEndpoints(endpoints =>
             {

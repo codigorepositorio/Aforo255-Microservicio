@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MS.AFORO255.Cross.Jwt.Src;
+using MSAFORO255.Security.DTO;
 using MSAFORO255.Security.Service;
 
 namespace MSAFORO255.Security.Controllers
@@ -15,15 +12,36 @@ namespace MSAFORO255.Security.Controllers
     {
         private readonly IAccessService _accessService;
 
-        public AuthController(IAccessService accessService)
+        private readonly JwtOptions _options;
+
+        public AuthController(IAccessService accessService, IOptionsSnapshot<JwtOptions> options)
         {
             _accessService = accessService;
+            _options = options.Value;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(_accessService.GetAll());
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] AuthRequest request)
+        {
+            var acceso = _accessService.Validate(request.UserName, request.Password);
+            if (!acceso)
+            {
+                return Unauthorized();
+            }
+            var token = JwtToken.Create(_options);
+
+            Response.Headers.Add("access-control-expose-headers","Authorization");
+            Response.Headers.Add("Authorization", JwtToken.Create(_options));
+
+            return Ok();
+
+            //return Ok(new { token });
         }
     }
 }
