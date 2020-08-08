@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RabbitMQ\CommandHandlers\" />
-    <Folder Include="RabbitMQ\Events\" />
+    <ProjectReference Include="..\MS.AFORO255.Cross.RabbitMQ\MS.AFORO255.Cross.RabbitMQ.csproj" />
   </ItemGroup>
 
 

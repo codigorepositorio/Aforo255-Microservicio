@@ -1,8 +1,8 @@
-﻿using MSAFORO255.Deposit.Model;
-using MSAFORO255.Deposit.Repository;
+﻿using MSAFORO255.Withtdrawal.Model;
+using MSAFORO255.Withtdrawal.Repository;
 
 
-namespace MSAFORO255.Deposit.Service
+namespace MSAFORO255.Withtdrawal.Service
 {
     public class TransactionService : ITransactionService
     {
@@ -13,15 +13,15 @@ namespace MSAFORO255.Deposit.Service
             _transactionRepository = transactionRepository;
         }
 
-        public Transaction Deposit(Transaction transaction)
+        public Transaction Withtdrawal(Transaction transaction)
         {
-            _transactionRepository.Deposit(transaction);
+            _transactionRepository.Withtdrawal(transaction);
             return transaction;
         }
 
-        public Transaction DepositReverse(Transaction transaction)
+        public Transaction WithtdrawalReverse(Transaction transaction)
         {
-            _transactionRepository.Deposit(transaction);
+            _transactionRepository.WithtdrawalReverse(transaction);
             return transaction;
         }
     }

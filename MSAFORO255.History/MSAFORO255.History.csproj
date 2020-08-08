@@ -6,13 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RabbitMQ\CommandHandlers\" />
-    <Folder Include="RabbitMQ\Events\" />
+    <ProjectReference Include="..\MS.AFORO255.Cross.RabbitMQ\MS.AFORO255.Cross.RabbitMQ.csproj" />
   </ItemGroup>
 
 

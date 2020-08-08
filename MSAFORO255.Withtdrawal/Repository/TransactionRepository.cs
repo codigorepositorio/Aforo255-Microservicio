@@ -1,11 +1,11 @@
-﻿using MSAFORO255.Deposit.Model;
-using MSAFORO255.Deposit.Repository.Data;
+﻿using MSAFORO255.Withtdrawal.Model;
+using MSAFORO255.Withtdrawal.Repository.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MSAFORO255.Deposit.Repository
+namespace MSAFORO255.Withtdrawal.Repository
 {
     public class TransactionRepository : ITransactionRepository
     {
@@ -15,14 +15,14 @@ namespace MSAFORO255.Deposit.Repository
         {
             _contextDatabase = contextDatabase;
         }
-        public Transaction Deposit(Transaction transaction)
+        public Transaction Withtdrawal(Transaction transaction)
         {
             _contextDatabase.Transaction.Add(transaction);
             _contextDatabase.SaveChanges();
             return transaction;
         }
 
-        public Transaction DepositReverse(Transaction transaction)
+        public Transaction WithtdrawalReverse(Transaction transaction)
         {
             _contextDatabase.Transaction.Add(transaction);
             _contextDatabase.SaveChanges();

@@ -5,6 +5,7 @@ namespace MSAFORO255.Deposit.Repository
     public interface ITransactionRepository
     {
 
-        bool Deposit(Transaction transaction);
+        Transaction Deposit(Transaction transaction);
+        Transaction DepositReverse(Transaction transaction);
     }
 }

@@ -1,14 +1,17 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MSAFORO255.Deposit.Repository;
-using MSAFORO255.Deposit.Repository.Data;
-using MSAFORO255.Deposit.Service;
+using MS.AFORO255.Cross.RabbitMQ.Src;
+using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
+using MSAFORO255.History.RabbitMQ.EventHandlers;
+using MSAFORO255.History.RabbitMQ.Events;
+using MSAFORO255.History.Repository;
+using MSAFORO255.History.Service;
 
-namespace MSAFORO255.Deposit
+namespace MSAFORO255.History
 {
     public class Startup
     {
@@ -22,20 +25,19 @@ namespace MSAFORO255.Deposit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-         services.AddDbContext<ContextDatabase>(
-         opt =>
-         {
-             opt.UseNpgsql(Configuration["postgres:cn"]);
-         });
-
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IContextDatabase, ContextDatabase>();
-
-
-
             services.AddControllers();
 
+            services.AddScoped<IRepositoryHistory, RepositoryHistory>();
+            services.AddScoped<IHistoryService, HistoryService>();
+
+
+            /*Start - RabbitMQ */
+            services.AddMediatR(typeof(Startup));
+            services.AddRabbitMQ();
+
+            services.AddTransient<DepositEventHandler>();
+            services.AddTransient<IEventHandler<DepositCreatedEvent>, DepositEventHandler>();
+            /*End - RabbitMQ*/
 
         }
 
@@ -55,6 +57,13 @@ namespace MSAFORO255.Deposit
             {
                 endpoints.MapControllers();
             });
+            ConfigureEventBus(app);
+        }
+
+         private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<DepositCreatedEvent, DepositEventHandler>();
         }
     }
 }

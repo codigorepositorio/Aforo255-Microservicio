@@ -8,6 +8,7 @@ namespace MSAFORO255.Deposit.Service
 {
     public interface ITransactionService
     {
-        bool Deposit(Transaction transaction);
+        Transaction Deposit(Transaction transaction);
+        Transaction DepositReverse(Transaction transaction);
     }
 }
