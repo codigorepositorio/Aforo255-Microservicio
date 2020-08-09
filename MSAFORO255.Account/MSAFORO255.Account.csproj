@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MS.AFORO255.Cross.Jwt\MS.AFORO255.Cross.Jwt.csproj" />
+    <ProjectReference Include="..\MS.AFORO255.Cross.Proxy\MS.AFORO255.Cross.Proxy.csproj" />
   </ItemGroup>
 
 
