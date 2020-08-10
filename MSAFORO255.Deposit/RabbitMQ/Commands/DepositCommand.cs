@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MS.AFORO255.Cross.RabbitMQ.Src.Commands;
 
 namespace MSAFORO255.Deposit.RabbitMQ.Commands
 {
-    public class DepositCommand 
+    public class DepositCommand : Command
     {
         public int IdTransaction { get; protected set; }
         public decimal Amount { get; protected set; }

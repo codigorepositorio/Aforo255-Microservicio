@@ -33,7 +33,6 @@ namespace MS.AFORO255.Cross.RabbitMQ.Src
             _options = configuration.GetOptions<RabbitMqOptions>(RabbitMQSectionName);
 
         }
-
         public Task SendCommand<T>(T command) where T : Command
         {
             return _mediator.Send(command);

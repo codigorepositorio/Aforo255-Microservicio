@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
 using MSAFORO255.Deposit.DTO;
+using MSAFORO255.Deposit.RabbitMQ.Commands;
 using MSAFORO255.Deposit.Service;
 
 namespace MSAFORO255.Deposit.Controllers
@@ -14,11 +12,13 @@ namespace MSAFORO255.Deposit.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
+        private readonly IEventBus _bus;
 
-        public TransactionController(ITransactionService transactionService)
+        public TransactionController(ITransactionService transactionService, IEventBus bus)
         {
             _transactionService = transactionService;
-        }
+            _bus = bus;
+        }                
 
         [HttpPost("Deposit")]
         public IActionResult Get([FromBody] TransactionRequest request)
@@ -31,11 +31,18 @@ namespace MSAFORO255.Deposit.Controllers
                 Type = "Deposit"
             };
             transaction =  _transactionService.Deposit(transaction);
+
+            var createCommand = new DepositCreateCommand(
+                idTransaction: transaction.Id,
+                amount: transaction.Amount,
+                type: transaction.Type,
+                creationDate: transaction.CreationDate,
+                accountId: transaction.AccountId
+                );
+
+            _bus.SendCommand(createCommand);
+
             return Ok(new { transaction.Id });
         }
-
-
-
-
     }
 }

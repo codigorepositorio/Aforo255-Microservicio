@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MSAFORO255.Deposit.Model;
 using MSAFORO255.History.Service;
 
 namespace MSAFORO255.History.Controllers
@@ -18,14 +17,23 @@ namespace MSAFORO255.History.Controllers
         {
             _historyService = historyService;
         }
-        [HttpGet("{accounIdd}")]
-        public async Task<IActionResult> GetHistory(int accounIdd)
+
+
+        [HttpGet("{accounId}")]
+        public async Task<IActionResult> GetHistory(int accounId)
         {
             var result = await _historyService.GetAll();
 
-            var data = result.Where(x => x.IdTransaction == accounIdd).ToList();
+            var data = result.Where(x => x.IdTransaction == accounId).ToList();
 
-            return View(data);
+            return Ok(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateHistory(HistoryTransaction request)
+        {
+            await _historyService.Add(request);
+            return  Ok();
         }
 
     }

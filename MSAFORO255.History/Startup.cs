@@ -1,13 +1,8 @@
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MS.AFORO255.Cross.RabbitMQ.Src;
-using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
-using MSAFORO255.History.RabbitMQ.EventHandlers;
-using MSAFORO255.History.RabbitMQ.Events;
 using MSAFORO255.History.Repository;
 using MSAFORO255.History.Service;
 
@@ -31,13 +26,13 @@ namespace MSAFORO255.History
             services.AddScoped<IHistoryService, HistoryService>();
 
 
-            /*Start - RabbitMQ */
-            services.AddMediatR(typeof(Startup));
-            services.AddRabbitMQ();
+            ///*Start - RabbitMQ */
+            //services.AddMediatR(typeof(Startup));
+            //services.AddRabbitMQ();
 
-            services.AddTransient<DepositEventHandler>();
-            services.AddTransient<IEventHandler<DepositCreatedEvent>, DepositEventHandler>();
-            /*End - RabbitMQ*/
+            //services.AddTransient<DepositEventHandler>();
+            //services.AddTransient<IEventHandler<DepositCreatedEvent>, DepositEventHandler>();
+            ///*End - RabbitMQ*/
 
         }
 
@@ -57,13 +52,13 @@ namespace MSAFORO255.History
             {
                 endpoints.MapControllers();
             });
-            ConfigureEventBus(app);
+            //ConfigureEventBus(app);
         }
 
-         private void ConfigureEventBus(IApplicationBuilder app)
-        {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<DepositCreatedEvent, DepositEventHandler>();
-        }
+        // private void ConfigureEventBus(IApplicationBuilder app)
+        //{
+        //    var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+        //    eventBus.Subscribe<DepositCreatedEvent, DepositEventHandler>();
+        //}
     }
 }

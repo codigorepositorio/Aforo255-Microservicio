@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MS.AFORO255.Cross.Jwt.Src;
 using MSAFORO255.Account.Repository;
 using MSAFORO255.Account.Repository.Data;
 using MSAFORO255.Account.Service;

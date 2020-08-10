@@ -12,9 +12,8 @@ namespace MSAFORO255.History.Repository
         public RepositoryHistory(IConfiguration configuration)
         {
             var client = new MongoClient(configuration["mongo:cn"]);
-
             if (client != null)
-                _database = client.GetDatabase(configuration["mongo: database"]);
+                _database = client.GetDatabase(configuration["mongo:database"]);
         }
         public IMongoCollection<HistoryTransaction> HistoryCredit
         {
