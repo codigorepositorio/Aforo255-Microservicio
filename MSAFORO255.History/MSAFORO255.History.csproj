@@ -9,5 +9,9 @@
     <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MS.AFORO255.Cross.RabbitMQ\MS.AFORO255.Cross.RabbitMQ.csproj" />
+  </ItemGroup>
+
 
 </Project>

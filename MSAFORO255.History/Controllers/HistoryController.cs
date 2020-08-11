@@ -24,7 +24,7 @@ namespace MSAFORO255.History.Controllers
         {
             var result = await _historyService.GetAll();
 
-            var data = result.Where(x => x.IdTransaction == accounId).ToList();
+            var data = result.Where(x => x.AccountId.Equals(accounId)).ToList();
 
             return Ok(data);
         }
