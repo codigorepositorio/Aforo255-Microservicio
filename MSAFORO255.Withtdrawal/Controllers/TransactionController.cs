@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
 using MSAFORO255.Withtdrawal.DTO;
+using MSAFORO255.Withtdrawal.RabbitMQ.Commands;
 using MSAFORO255.Withtdrawal.Service;
 
 namespace MSAFORO255.Withtdrawal.Controllers
@@ -14,10 +12,12 @@ namespace MSAFORO255.Withtdrawal.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
+        private readonly IEventBus _bus;
 
-        public TransactionController(ITransactionService transactionService)
+        public TransactionController(ITransactionService transactionService, IEventBus bus)
         {
             _transactionService = transactionService;
+            _bus = bus;
         }
 
         [HttpPost("Withtdrawal")]
@@ -31,6 +31,16 @@ namespace MSAFORO255.Withtdrawal.Controllers
                 Type = "Retiro"
             };
             transaction =  _transactionService.Withtdrawal(transaction);
+            var createdCommand = new WithtdrawalCreateCommand(
+                
+                idTransaction:transaction.Id,
+                amount:transaction.Amount,
+                type:transaction.Type,
+                creationDate:transaction.CreationDate,
+                accountId:transaction.AccountId
+                );
+            _bus.SendCommand(createdCommand);
+
             return Ok(new { transaction.Id });
         }
 

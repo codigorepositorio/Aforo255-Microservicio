@@ -14,9 +14,5 @@
     <ProjectReference Include="..\MS.AFORO255.Cross.RabbitMQ\MS.AFORO255.Cross.RabbitMQ.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="RabbitMQ\EventHandlers\" />
-  </ItemGroup>
-
 
 </Project>

@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using MS.AFORO255.Cross.RabbitMQ.Src;
+using MSAFORO255.Withtdrawal.RabbitMQ.CommandHandlers;
+using MSAFORO255.Withtdrawal.RabbitMQ.Commands;
 using MSAFORO255.Withtdrawal.Repository;
 using MSAFORO255.Withtdrawal.Repository.Data;
 using MSAFORO255.Withtdrawal.Service;
@@ -37,6 +35,14 @@ namespace MSAFORO255.Withtdrawal
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IContextDatabase, ContextDatabase>();
+
+
+            //Start RabbitMQ
+            services.AddMediatR(typeof(Startup));
+            services.AddRabbitMQ();
+            services.AddTransient<IRequestHandler<WithtdrawalCreateCommand, bool>, WithtdrawalCommandHandler>();
+            services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

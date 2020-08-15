@@ -1,15 +1,11 @@
-﻿
-using MS.AFORO255.Cross.RabbitMQ.Src.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MS.AFORO255.Cross.RabbitMQ.Src.Events;
 
 namespace MSAFORO255.Withtdrawal.RabbitMQ.Events
 {
-    public class DepositCreatedEvent : Event
+    public class WithtdrawalCreatedEvent: Event
     {
-        public DepositCreatedEvent(int idTransaction, decimal amount, string type, string creationDate, int accountId)
+        public WithtdrawalCreatedEvent(int idTransaction, decimal amount, 
+            string type, string creationDate, int accountId)
         {
             IdTransaction = idTransaction;
             Amount = amount;

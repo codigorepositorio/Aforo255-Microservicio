@@ -39,8 +39,6 @@ namespace MSAFORO255.Deposit
             //Start RabbitMQ
             services.AddMediatR(typeof(Startup));
             services.AddRabbitMQ();
-
-
             services.AddTransient<IRequestHandler<DepositCreateCommand, bool>, DepositCommandHandler>();
             services.AddControllers();
 

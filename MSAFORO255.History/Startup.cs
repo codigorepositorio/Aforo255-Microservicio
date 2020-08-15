@@ -35,7 +35,12 @@ namespace MSAFORO255.History
             services.AddRabbitMQ();
 
             services.AddTransient<DepositEventHandler>();
+            services.AddTransient<WithtdrawalEventHandler>();
+
+            services.AddTransient<IEventHandler<WithtdrawalCreatedEvent>, WithtdrawalEventHandler>();
             services.AddTransient<IEventHandler<DepositCreatedEvent>, DepositEventHandler>();
+         
+
 
             ///*End - RabbitMQ*/
 
@@ -65,6 +70,8 @@ namespace MSAFORO255.History
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<DepositCreatedEvent, DepositEventHandler>();
+            eventBus.Subscribe<WithtdrawalCreatedEvent, WithtdrawalEventHandler>();
+
         }
     }
 }
