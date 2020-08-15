@@ -46,7 +46,6 @@ namespace MSAFORO255.Deposit
             //Fin RabbitMQ
 
             services.AddProxyHttp();
-
             
 
         }
