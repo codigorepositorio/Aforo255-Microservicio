@@ -41,6 +41,15 @@ namespace MSAFORO255.Withtdrawal.Controllers
                 );
             _bus.SendCommand(createdCommand);
 
+            var createCommandNotification = new NotificationCreateCommand(
+            idTransaction: transaction.Id,
+            amount: transaction.Amount,
+            type: transaction.Type,
+            accountId: transaction.AccountId
+            );
+
+            _bus.SendCommand(createCommandNotification);
+
             return Ok(new { transaction.Id });
         }
 

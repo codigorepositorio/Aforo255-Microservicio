@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MSAFORO255.Deposit.RabbitMQ.Commands
+﻿namespace MSAFORO255.Deposit.RabbitMQ.Commands
 {
 
     public class DepositCreateCommand : DepositCommand

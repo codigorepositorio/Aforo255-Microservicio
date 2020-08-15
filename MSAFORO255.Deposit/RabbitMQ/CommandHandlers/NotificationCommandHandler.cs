@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 
 namespace MSAFORO255.Deposit.RabbitMQ.CommandHandlers
 {
-    public class DepositCommandHandler : IRequestHandler<DepositCreateCommand, bool>
+    public class NotificationCommandHandler : IRequestHandler<NotificationCreateCommand, bool>
     {
         private readonly IEventBus _bus;
 
-        public DepositCommandHandler(IEventBus bus)
+        public NotificationCommandHandler(IEventBus bus)
         {
             _bus = bus;
         }
-        public Task<bool> Handle(DepositCreateCommand request, CancellationToken cancellationToken)
+        public Task<bool> Handle(NotificationCreateCommand request, CancellationToken cancellationToken)
         {
-            _bus.Publish(new DepositCreatedEvent(
+            _bus.Publish(new NotificationCreatedEvent(
                 request.IdTransaction,
                 request.Amount,
-                request.Type,
-                request.CreationDate,
+                request.Type,                
                 request.AccountId
                 ));
 

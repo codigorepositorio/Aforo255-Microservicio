@@ -2,22 +2,20 @@
 
 namespace MSAFORO255.Deposit.RabbitMQ.Events
 {
-    public class DepositCreatedEvent: Event
+    public class NotificationCreatedEvent : Event
     {
-        public DepositCreatedEvent(int idTransaction, decimal amount, 
-            string type, string creationDate, int accountId)
+        public NotificationCreatedEvent(int idTransaction, decimal amount, 
+            string type, int accountId)
         {
             IdTransaction = idTransaction;
             Amount = amount;
-            Type = type;
-            CreationDate = creationDate;
+            Type = type;            
             AccountId = accountId;
         }
 
         public int IdTransaction { get; set; }
         public decimal Amount { get; set; }
-        public string Type { get; set; }
-        public string CreationDate { get; set; }
+        public string Type { get; set; }        
         public int AccountId { get; set; }
     }
 }

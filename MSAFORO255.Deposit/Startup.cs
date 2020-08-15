@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MS.AFORO255.Cross.Proxy.Proxy;
 using MS.AFORO255.Cross.RabbitMQ.Src;
 using MSAFORO255.Deposit.RabbitMQ.CommandHandlers;
 using MSAFORO255.Deposit.RabbitMQ.Commands;
@@ -26,7 +27,8 @@ namespace MSAFORO255.Deposit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-         services.AddDbContext<ContextDatabase>(
+            services.AddControllers();
+            services.AddDbContext<ContextDatabase>(
          opt =>
          {
              opt.UseNpgsql(Configuration["postgres:cn"]);
@@ -40,8 +42,12 @@ namespace MSAFORO255.Deposit
             services.AddMediatR(typeof(Startup));
             services.AddRabbitMQ();
             services.AddTransient<IRequestHandler<DepositCreateCommand, bool>, DepositCommandHandler>();
-            services.AddControllers();
+            services.AddTransient<IRequestHandler<NotificationCreateCommand, bool>, NotificationCommandHandler>();
+            //Fin RabbitMQ
 
+            services.AddProxyHttp();
+
+            
 
         }
 

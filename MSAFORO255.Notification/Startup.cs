@@ -1,9 +1,14 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MS.AFORO255.Cross.RabbitMQ.Src;
+using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
+using MSAFORO255.Notification.RabbitMQ.EventHandler;
+using MSAFORO255.Notification.RabbitMQ.Events;
 using MSAFORO255.Notification.Repository;
 using MSAFORO255.Notification.Repository.Data;
 
@@ -27,6 +32,14 @@ namespace MSAFORO255.Notification
                     opt.UseMySQL(Configuration["mariadb:cn"]);
                 });
 
+            ///*Start - RabbitMQ */
+            services.AddMediatR(typeof(Startup));
+            services.AddRabbitMQ();
+            services.AddTransient<NotificationEventHandler>();
+            services.AddTransient<IEventHandler<NotificationCreatedEvent>, NotificationEventHandler>();
+
+            ///*End - RabbitMQ*/
+
             services.AddScoped<IContextDatabase, ContextDatabase>();
             services.AddScoped<IMailRepository, MailRepository>();
 
@@ -49,6 +62,14 @@ namespace MSAFORO255.Notification
             {
                 endpoints.MapControllers();
             });
+
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<NotificationCreatedEvent, NotificationEventHandler>();
         }
     }
 }

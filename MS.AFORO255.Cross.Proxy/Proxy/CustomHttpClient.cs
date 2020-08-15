@@ -97,6 +97,7 @@ namespace MS.AFORO255.Cross.Proxy.Proxy
         public async Task<HttpResponseMessage> PostAsync<T>(string uri, T item, string token)
         {
             return await DoPostPutAsync(HttpMethod.Post, uri, item, token);
-        }       
+        }
+
     }
 }

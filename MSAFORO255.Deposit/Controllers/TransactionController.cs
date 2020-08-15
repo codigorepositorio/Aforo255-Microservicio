@@ -30,6 +30,7 @@ namespace MSAFORO255.Deposit.Controllers
                 CreationDate = DateTime.Now.ToString(),
                 Type = "Deposit"
             };
+
             transaction =  _transactionService.Deposit(transaction);
 
             var createCommand = new DepositCreateCommand(
@@ -41,6 +42,15 @@ namespace MSAFORO255.Deposit.Controllers
                 );
 
             _bus.SendCommand(createCommand);
+
+            var createCommandNotification = new NotificationCreateCommand(
+               idTransaction: transaction.Id,
+               amount: transaction.Amount,
+               type: transaction.Type,               
+               accountId: transaction.AccountId
+               );
+
+            _bus.SendCommand(createCommandNotification);
 
             return Ok(new { transaction.Id });
         }

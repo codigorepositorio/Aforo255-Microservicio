@@ -41,6 +41,9 @@ namespace MSAFORO255.Withtdrawal
             services.AddMediatR(typeof(Startup));
             services.AddRabbitMQ();
             services.AddTransient<IRequestHandler<WithtdrawalCreateCommand, bool>, WithtdrawalCommandHandler>();
+
+            services.AddTransient<IRequestHandler<NotificationCreateCommand, bool>, NotificationCommandHandler>();
+
             services.AddControllers();
 
         }
