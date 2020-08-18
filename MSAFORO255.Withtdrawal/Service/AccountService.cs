@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MS.AFORO255.Cross.Proxy.Proxy;
-using MSAFORO255.Deposit.DTO;
-using MSAFORO255.Deposit.Model;
-using MSAFORO255.Deposit.Repository;
+using MSAFORO255.Withtdrawal.DTO;
+using MSAFORO255.Withtdrawal.Model;
+//using MSAFORO255.Withtdrawal.Repository;
+//using MSAFORO255.Withtdrawal.Service;
 using Polly;
 using Polly.CircuitBreaker;
 using System;
 using System.Threading.Tasks;
 
-namespace MSAFORO255.Deposit.Service
+namespace MSAFORO255.Withtdrawal.Service
 {
     public class AccountService : IAccountService
     {
@@ -24,17 +25,17 @@ namespace MSAFORO255.Deposit.Service
             _configuration = configuration;
         }
 
-        public async Task<bool> DepositAccount(AccountRequest request)
+        public async Task<bool> WithtdrawalAccount(AccountRequest request)
         {
-            string uri = _configuration["proxy:urlAccountDeposit"];
+            string uri = _configuration["proxy:urlAccountWithdrawal"];
             var response = await _httpClient.PostAsync(uri, request);
             response.EnsureSuccessStatusCode();
             return true;
         }
 
-        public bool DepositReverse(Transaction request)
+        public bool WithtdrawalReverse(Transaction request)
         {
-            _transactionService.DepositReverse(request);
+            _transactionService.WithtdrawalReverse(request);
             return true;
         }
 
@@ -72,7 +73,7 @@ namespace MSAFORO255.Deposit.Service
                              Amount = request.Amount,
                              IdAccount = request.AccountId
                          };
-                         response = DepositAccount(account).Result;
+                         response = WithtdrawalAccount(account).Result;
                          Console.WriteLine("Solicitud realizada con èxito");
                      });
 
@@ -91,7 +92,7 @@ namespace MSAFORO255.Deposit.Service
                          Type ="Deposit R",
                      };
 
-                     response = DepositReverse(transaction);
+                     response = WithtdrawalReverse(transaction);
                      response = false;
                      Console.WriteLine("Solicitud cancelada con èxito");
 

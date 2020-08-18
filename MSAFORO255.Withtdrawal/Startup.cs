@@ -34,6 +34,8 @@ namespace MSAFORO255.Withtdrawal
         });
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IAccountService, AccountService>();
+
             services.AddScoped<IContextDatabase, ContextDatabase>();
 
 

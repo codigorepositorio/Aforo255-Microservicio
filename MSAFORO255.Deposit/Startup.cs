@@ -36,7 +36,10 @@ namespace MSAFORO255.Deposit
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IContextDatabase, ContextDatabase>();
+            
+
 
             //Start RabbitMQ
             services.AddMediatR(typeof(Startup));

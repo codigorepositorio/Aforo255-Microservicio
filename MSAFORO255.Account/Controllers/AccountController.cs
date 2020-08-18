@@ -11,7 +11,7 @@ namespace MSAFORO255.Account.Controllers
 {
     [Route("api/Account")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accounService;

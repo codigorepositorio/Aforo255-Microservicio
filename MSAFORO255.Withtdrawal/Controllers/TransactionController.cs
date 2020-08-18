@@ -12,13 +12,17 @@ namespace MSAFORO255.Withtdrawal.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
+        private readonly IAccountService _accountService;
         private readonly IEventBus _bus;
 
-        public TransactionController(ITransactionService transactionService, IEventBus bus)
+        public TransactionController(ITransactionService transactionService, IAccountService accountService, IEventBus bus)
         {
             _transactionService = transactionService;
+            _accountService = accountService;
             _bus = bus;
         }
+
+
 
         [HttpPost("Withtdrawal")]
         public IActionResult Get([FromBody] TransactionRequest request)
@@ -30,25 +34,33 @@ namespace MSAFORO255.Withtdrawal.Controllers
                 CreationDate = DateTime.Now.ToString(),
                 Type = "Retiro"
             };
-            transaction =  _transactionService.Withtdrawal(transaction);
-            var createdCommand = new WithtdrawalCreateCommand(
-                
-                idTransaction:transaction.Id,
-                amount:transaction.Amount,
-                type:transaction.Type,
-                creationDate:transaction.CreationDate,
-                accountId:transaction.AccountId
+            transaction = _transactionService.Withtdrawal(transaction);
+
+            //Ejecutando el CircuiBraker
+            bool isProccess = _accountService.Execute(transaction);
+            if (isProccess)
+            {
+                var createdCommand = new WithtdrawalCreateCommand(
+
+                idTransaction: transaction.Id,
+                amount: transaction.Amount,
+                type: transaction.Type,
+                creationDate: transaction.CreationDate,
+                accountId: transaction.AccountId
+           );
+                _bus.SendCommand(createdCommand);
+
+                var createCommandNotification = new NotificationCreateCommand(
+                idTransaction: transaction.Id,
+                amount: transaction.Amount,
+                type: transaction.Type,
+                accountId: transaction.AccountId
                 );
-            _bus.SendCommand(createdCommand);
 
-            var createCommandNotification = new NotificationCreateCommand(
-            idTransaction: transaction.Id,
-            amount: transaction.Amount,
-            type: transaction.Type,
-            accountId: transaction.AccountId
-            );
+                _bus.SendCommand(createCommandNotification);
+            }
 
-            _bus.SendCommand(createCommandNotification);
+
 
             return Ok(new { transaction.Id });
         }
