@@ -1,10 +1,15 @@
+using Consul;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MS.AFORO255.Cross.Consul.Consul;
+using MS.AFORO255.Cross.Consul.Mvc;
+using MS.AFORO255.Cross.Proxy.Proxy;
 using MS.AFORO255.Cross.RabbitMQ.Src;
 using MSAFORO255.Withtdrawal.RabbitMQ.CommandHandlers;
 using MSAFORO255.Withtdrawal.RabbitMQ.Commands;
@@ -30,7 +35,9 @@ namespace MSAFORO255.Withtdrawal
             services.AddDbContext<ContextDatabase>(
         opt =>
         {
-            opt.UseNpgsql(Configuration["postgres:cn"]);
+            //opt.UseNpgsql(Configuration["postgres:cn"]);
+            opt.UseNpgsql(Configuration["cnpostgres"]);
+
         });
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
@@ -43,15 +50,20 @@ namespace MSAFORO255.Withtdrawal
             services.AddMediatR(typeof(Startup));
             services.AddRabbitMQ();
             services.AddTransient<IRequestHandler<WithtdrawalCreateCommand, bool>, WithtdrawalCommandHandler>();
-
             services.AddTransient<IRequestHandler<NotificationCreateCommand, bool>, NotificationCommandHandler>();
+            //Proxy-Polly
+            services.AddProxyHttp();
 
-            services.AddControllers();
+            /*Start - Consul*/
+            services.AddSingleton<IServiceId, ServiceId>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddConsul();
+            /*End - Consul*/
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IHostApplicationLifetime hostApplicationLifetime, IConsulClient consulClient)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +77,13 @@ namespace MSAFORO255.Withtdrawal
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            //Genera el ID  de consult
+            var serviceId = app.UseConsul();
+            hostApplicationLifetime.ApplicationStopped.Register(() =>
+            {
+                consulClient.Agent.ServiceDeregister(serviceId);
             });
         }
     }

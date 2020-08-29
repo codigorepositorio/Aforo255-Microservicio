@@ -1,5 +1,5 @@
 ﻿using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
-using MSAFORO255.Deposit.Model;
+using MSAFORO255.History.Model;
 using MSAFORO255.History.RabbitMQ.Events;
 using MSAFORO255.History.Service;
 using System.Threading.Tasks;

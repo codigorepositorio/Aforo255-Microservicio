@@ -1,4 +1,4 @@
-﻿namespace MSAFORO255.Deposit.DTO
+﻿namespace MSAFORO255.History.DTO
 {
     public class HistoryResponse
     {  

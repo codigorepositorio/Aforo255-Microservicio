@@ -1,9 +1,13 @@
+using Consul;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MS.AFORO255.Cross.Consul.Consul;
+using MS.AFORO255.Cross.Consul.Mvc;
 using MS.AFORO255.Cross.RabbitMQ.Src;
 using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
 using MSAFORO255.History.RabbitMQ.EventHandler;
@@ -34,20 +38,23 @@ namespace MSAFORO255.History
             services.AddMediatR(typeof(Startup));
             services.AddRabbitMQ();
 
-            services.AddTransient<DepositEventHandler>();
-            services.AddTransient<WithtdrawalEventHandler>();
-
-            services.AddTransient<IEventHandler<WithtdrawalCreatedEvent>, WithtdrawalEventHandler>();
+            services.AddTransient<DepositEventHandler>();            
             services.AddTransient<IEventHandler<DepositCreatedEvent>, DepositEventHandler>();
-         
 
-
+            services.AddTransient<WithtdrawalEventHandler>();
+            services.AddTransient<IEventHandler<WithtdrawalCreatedEvent>, WithtdrawalEventHandler>();
             ///*End - RabbitMQ*/
+            ///
+            /*Start - Consul*/
+            services.AddSingleton<IServiceId, ServiceId>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddConsul();
+            /*End - Consul*/
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IHostApplicationLifetime hostApplicationLifetime, IConsulClient consulClient)
         {
             if (env.IsDevelopment())
             {
@@ -61,6 +68,13 @@ namespace MSAFORO255.History
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            //Genera el ID  de consult
+            var serviceId = app.UseConsul();
+            hostApplicationLifetime.ApplicationStopped.Register(() =>
+            {
+                consulClient.Agent.ServiceDeregister(serviceId);
             });
 
             ConfigureEventBus(app);

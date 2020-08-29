@@ -9,15 +9,14 @@ namespace MSAFORO255.Security.Controllers
     [Route("api/Auth")]
     [ApiController]
     public class AuthController : ControllerBase
-    {
+    {        
+        private readonly JwtOptions _options;
         private readonly IAccessService _accessService;
 
-        private readonly JwtOptions _options;
-
         public AuthController(IAccessService accessService, IOptionsSnapshot<JwtOptions> options)
-        {
-            _accessService = accessService;
+        {            
             _options = options.Value;
+            _accessService = accessService;
         }
 
         [HttpGet]
@@ -38,9 +37,7 @@ namespace MSAFORO255.Security.Controllers
 
             Response.Headers.Add("access-control-expose-headers","Authorization");
             Response.Headers.Add("Authorization", JwtToken.Create(_options));
-
             return Ok();
-
             //return Ok(new { token });
         }
     }

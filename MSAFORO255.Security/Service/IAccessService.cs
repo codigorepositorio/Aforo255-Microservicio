@@ -9,6 +9,6 @@ namespace MSAFORO255.Security.Service
    public interface IAccessService
     {
         IEnumerable<Access> GetAll();
-        bool Validate(string userName, string password);
+        bool Validate(string userName, string password);        
     }
 }

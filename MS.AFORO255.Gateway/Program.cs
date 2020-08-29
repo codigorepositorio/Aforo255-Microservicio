@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Ocelot.Middleware;
 
 namespace MS.AFORO255.Gateway
 {
@@ -19,15 +13,14 @@ namespace MS.AFORO255.Gateway
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-              Host.CreateDefaultBuilder(args)
-                  .ConfigureWebHostDefaults(webBuilder =>
-                  {
-                      webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
-                      {
-                          config.AddJsonFile("ocelot.json");
-                      });
-
-                      webBuilder.UseStartup<Startup>();
-                  });
+        Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+    {
+        config.AddJsonFile("ocelot.json");
+    });
+            webBuilder.UseStartup<Startup>();
+        });
     }
 }

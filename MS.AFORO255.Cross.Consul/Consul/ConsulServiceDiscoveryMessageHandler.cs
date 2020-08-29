@@ -21,7 +21,6 @@ namespace MS.AFORO255.Cross.Consul.Consul
             {
                 throw new InvalidOperationException("Consul URL was not provided.");
             }
-
             _servicesRegistry = servicesRegistry;
             _options = options;
             _serviceName = serviceName;

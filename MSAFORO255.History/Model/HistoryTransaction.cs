@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MSAFORO255.Deposit.Model
+namespace MSAFORO255.History.Model
 {
 
     public class HistoryTransaction

@@ -1,5 +1,5 @@
-﻿using MSAFORO255.Deposit.DTO;
-using MSAFORO255.Deposit.Model;
+﻿using MSAFORO255.History.DTO;
+using MSAFORO255.History.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

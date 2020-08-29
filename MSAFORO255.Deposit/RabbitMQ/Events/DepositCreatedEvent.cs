@@ -19,5 +19,7 @@ namespace MSAFORO255.Deposit.RabbitMQ.Events
         public string Type { get; set; }
         public string CreationDate { get; set; }
         public int AccountId { get; set; }
+
+
     }
 }

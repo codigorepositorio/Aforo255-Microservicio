@@ -4,8 +4,8 @@ namespace MSAFORO255.Withtdrawal.RabbitMQ.Events
 {
     public class NotificationCreatedEvent : Event
     {
-        public NotificationCreatedEvent(int idTransaction, decimal amount, 
-            string type, int accountId)
+        public NotificationCreatedEvent(int idTransaction, decimal amount, string type, int accountId)
+
         {
             IdTransaction = idTransaction;
             Amount = amount;

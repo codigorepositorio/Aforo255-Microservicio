@@ -33,14 +33,13 @@ namespace MSAFORO255.Security
             services.AddDbContext<ContextDatabase>(
                 opt =>
                 {
-                    opt.UseMySQL(Configuration["mysql:cn"]);
-                });                
+                    //opt.UseMySQL(Configuration["mysql:cn"]);
+                    opt.UseMySQL(Configuration["cnmysql"]);
 
+                });                
               
             services.AddScoped<IAccessService, AccessService>();
-
             services.AddScoped<IAccessRepository, AccessRepository>();
-
             services.AddScoped<IContextDatabase, ContextDatabase>();
 
 
@@ -73,6 +72,8 @@ namespace MSAFORO255.Security
             {
                 endpoints.MapControllers();
             });
+
+            //Genera el ID  de consult
             var serviceId = app.UseConsul();
             hostApplicationLifetime.ApplicationStopped.Register(() =>
             {

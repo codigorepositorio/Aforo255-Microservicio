@@ -89,7 +89,7 @@ namespace MSAFORO255.Withtdrawal.Service
                          
                          CreationDate = DateTime.Now.ToString(),
                          AccountId = request.AccountId,
-                         Type ="Deposit R",
+                         Type ="RETIR R",
                      };
 
                      response = WithtdrawalReverse(transaction);

@@ -22,10 +22,8 @@ namespace MSAFORO255.Withtdrawal.Controllers
             _bus = bus;
         }
 
-
-
         [HttpPost("Withtdrawal")]
-        public IActionResult Get([FromBody] TransactionRequest request)
+        public IActionResult Withtdrawal([FromBody] TransactionRequest request)
         {
             Model.Transaction transaction = new Model.Transaction()
             {

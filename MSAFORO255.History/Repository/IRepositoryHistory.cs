@@ -1,6 +1,6 @@
 ﻿
 using MongoDB.Driver;
-using MSAFORO255.Deposit.Model;
+using MSAFORO255.History.Model;
 
 namespace MSAFORO255.History.Repository
 {

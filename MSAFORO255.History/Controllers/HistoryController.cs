@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MSAFORO255.Deposit.Model;
+using MSAFORO255.History.Model;
 using MSAFORO255.History.Service;
 
 namespace MSAFORO255.History.Controllers

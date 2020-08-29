@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
-using MSAFORO255.Deposit.DTO;
-using MSAFORO255.Deposit.Model;
+using MSAFORO255.History.DTO;
+using MSAFORO255.History.Model;
 using MSAFORO255.History.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,13 +30,14 @@ namespace MSAFORO255.History.Service
             {
                 response.Add(new HistoryResponse()
                 {
-                    AccountId  = item.AccountId,
+                    AccountId = item.AccountId,
+                    Amount = item.Amount,
                     CreationDate = item.CreationDate,
                     IdTransaction = item.IdTransaction,
                     Type = item.Type
                 });
             }
-            return response; ;
+            return response;
         }
     }
 }

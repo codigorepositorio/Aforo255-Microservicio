@@ -1,10 +1,14 @@
+using Consul;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MS.AFORO255.Cross.Consul.Consul;
+using MS.AFORO255.Cross.Consul.Mvc;
 using MS.AFORO255.Cross.RabbitMQ.Src;
 using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
 using MSAFORO255.Notification.RabbitMQ.EventHandler;
@@ -29,7 +33,9 @@ namespace MSAFORO255.Notification
             services.AddDbContext<ContextDatabase>(
                 opt =>
                 {
-                    opt.UseMySQL(Configuration["mariadb:cn"]);
+                    //opt.UseMySQL(Configuration["mariadb:cn"]);
+                    opt.UseMySQL(Configuration["cnmariadb"]);
+
                 });
 
             ///*Start - RabbitMQ */
@@ -44,10 +50,17 @@ namespace MSAFORO255.Notification
             services.AddScoped<IMailRepository, MailRepository>();
 
             services.AddControllers();
+
+
+            /*Start - Consul*/
+            services.AddSingleton<IServiceId, ServiceId>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddConsul();
+            /*End - Consul*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IHostApplicationLifetime hostApplicationLifetime, IConsulClient consulClient)
         {
             if (env.IsDevelopment())
             {
@@ -61,6 +74,13 @@ namespace MSAFORO255.Notification
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            //Genera el ID  de consult
+            var serviceId = app.UseConsul();
+            hostApplicationLifetime.ApplicationStopped.Register(() =>
+            {
+                consulClient.Agent.ServiceDeregister(serviceId);
             });
 
             ConfigureEventBus(app);

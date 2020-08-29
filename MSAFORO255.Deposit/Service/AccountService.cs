@@ -2,7 +2,6 @@
 using MS.AFORO255.Cross.Proxy.Proxy;
 using MSAFORO255.Deposit.DTO;
 using MSAFORO255.Deposit.Model;
-using MSAFORO255.Deposit.Repository;
 using Polly;
 using Polly.CircuitBreaker;
 using System;
@@ -15,9 +14,8 @@ namespace MSAFORO255.Deposit.Service
         private readonly ITransactionService _transactionService;
         private readonly IHttpClient _httpClient;
         private readonly IConfiguration _configuration;
-
-
-        public AccountService(ITransactionService transactionService, IHttpClient httpClient, IConfiguration configuration)
+        public AccountService(ITransactionService transactionService, 
+            IHttpClient httpClient, IConfiguration configuration)
         {
             _transactionService = transactionService;
             _httpClient = httpClient;
@@ -84,8 +82,7 @@ namespace MSAFORO255.Deposit.Service
 
                      Transaction transaction = new Transaction()
                      {
-                         Amount = request.Amount,
-                         
+                         Amount = request.Amount,                         
                          CreationDate = DateTime.Now.ToString(),
                          AccountId = request.AccountId,
                          Type ="Deposit R",

@@ -1,7 +1,6 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using MSAFORO255.Deposit.Model;
+using MSAFORO255.History.Model;
 
 namespace MSAFORO255.History.Repository
 {
@@ -11,7 +10,9 @@ namespace MSAFORO255.History.Repository
 
         public RepositoryHistory(IConfiguration configuration)
         {
-            var client = new MongoClient(configuration["mongo:cn"]);
+            var client = new MongoClient(configuration["cnmongo"]);
+
+            //var client = new MongoClient(configuration["mongo:cn"]);
             if (client != null)
                 _database = client.GetDatabase(configuration["mongo:database"]);
         }

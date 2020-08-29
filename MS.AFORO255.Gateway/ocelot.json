@@ -1,7 +1,7 @@
-{
+ {
   "Routes": [
     {
-      //"applicationUrl": "https://localhost:5001",
+      //"applicationUrl": "http://localhost:5001/api/auht"
       "DownstreamPathTemplate": "/api/auth",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -11,12 +11,98 @@
         }
       ],
       "UpstreamPathTemplate": "/api/token",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "Post" ]
+    },
 
+    /////////////////////////INICIO - API ACCOUNT/CUENTAS////////////////////////////////////////////
+    {
+      //"applicationUrl": "http://localhost:5002/api/Account"
+      "DownstreamPathTemplate": "/account-service/api/account",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cuenta",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "SECURITY-TOKEN",
+        "AllowedScopes": []
+      }
+    },
+    /////////////////////////FIN////////////////////////////////////////////
+
+
+    /////////////////////////INICIO - API Deposit/Depositos////////////////////////////////////////////
+    {
+      //"applicationUrl": "http://localhost:5003/api/Transaction/Deposit"
+      "DownstreamPathTemplate": "/deposit-service/api/Transaction/Deposit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/api/deposito",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "SECURITY-TOKEN",
+        "AllowedScopes": []
+      }
+    },
+
+    /////////////////////////FIN////////////////////////////////////////////
+
+
+    /////////////////////////INICIO - API Deposit/Withtdrawal////////////////////////////////////////////
+    {
+      //"applicationUrl": "http://localhost:5004/api/Transaction/Withtdrawal"
+      "DownstreamPathTemplate": "/withtdrawal-service/api/Transaction/Withtdrawal",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/api/retiro",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "SECURITY-TOKEN",
+        "AllowedScopes": []
+      }
+    },
+    /////////////////////////FIN////////////////////////////////////////////
+
+
+    /////////////////////////INICIO - API Deposit/History/////////////////////////////////////////////
+    {
+
+      //"applicationUrl": "http://localhost:5005/api/History/6" >> URL original del API
+      ////http://localhost:9999/history-service/api/history/2 >>URL del balanceador de carga
+
+      "DownstreamPathTemplate": "/history-service/api/history/{accounId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/api/movimiento/{accounId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "SECURITY-TOKEN",
+        "AllowedScopes": []
+      }
     }
+    /////////////////////////FIN////////////////////////////////////////////
   ],
+
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5000"
   }
 }
-
