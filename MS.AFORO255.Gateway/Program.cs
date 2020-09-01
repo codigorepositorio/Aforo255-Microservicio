@@ -17,9 +17,9 @@ namespace MS.AFORO255.Gateway
         .ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
-    {
+        {
         config.AddJsonFile("ocelot.json");
-    });
+         });
             webBuilder.UseStartup<Startup>();
         });
     }

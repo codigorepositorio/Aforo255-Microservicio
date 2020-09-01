@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS.AFORO255.Cross.Consul.Consul;
 using MS.AFORO255.Cross.Consul.Mvc;
+using MS.AFORO255.Cross.Jaeger.Jaeger;
 using MSAFORO255.Account.Repository;
 using MSAFORO255.Account.Repository.Data;
 using MSAFORO255.Account.Service;
@@ -45,6 +46,10 @@ namespace MSAFORO255.Account
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddConsul();
             /*End - Consul*/
+
+
+            services.AddJaeger();
+            services.AddOpenTracing();
 
 
         }

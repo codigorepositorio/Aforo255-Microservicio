@@ -8,8 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS.AFORO255.Cross.Consul.Consul;
 using MS.AFORO255.Cross.Consul.Mvc;
+using MS.AFORO255.Cross.Jaeger.Jaeger;
 using MS.AFORO255.Cross.RabbitMQ.Src;
 using MS.AFORO255.Cross.RabbitMQ.Src.Bus;
+using MS.AFORO255.Cross.Redis.Redis;
 using MSAFORO255.History.RabbitMQ.EventHandler;
 using MSAFORO255.History.RabbitMQ.Events;
 using MSAFORO255.History.Repository;
@@ -50,6 +52,12 @@ namespace MSAFORO255.History
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddConsul();
             /*End - Consul*/
+
+            services.AddRedis();
+
+
+            services.AddJaeger();
+            services.AddOpenTracing();
 
         }
 

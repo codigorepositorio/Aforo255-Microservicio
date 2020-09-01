@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS.AFORO255.Cross.Consul.Consul;
 using MS.AFORO255.Cross.Consul.Mvc;
+using MS.AFORO255.Cross.Jaeger.Jaeger;
 using MS.AFORO255.Cross.Jwt.Src;
 using MSAFORO255.Security.Repository;
 using MSAFORO255.Security.Repository.Data;
@@ -42,14 +43,15 @@ namespace MSAFORO255.Security
             services.AddScoped<IAccessRepository, AccessRepository>();
             services.AddScoped<IContextDatabase, ContextDatabase>();
 
-
-
             /*Start - Consul*/
             services.AddSingleton<IServiceId, ServiceId>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddConsul();
             /*End - Consul*/
 
+
+            services.AddJaeger();
+            services.AddOpenTracing();
 
 
         }
